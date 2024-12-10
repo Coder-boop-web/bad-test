@@ -40,4 +40,4 @@ jobs:
 
 # inclua um dotnet nuget push para o github artifacts
     - name: Push to GitHub Packages
-      run: dotnet nuget push **/*.nupkg --source github --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push **/*.nupkg --source github --skip-duplicate ${{ secrets.GITHUB_TOKEN }}
