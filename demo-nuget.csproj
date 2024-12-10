@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>demo_nuget</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>nuget-package</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>nuget</Authors>
+    <Company>nuget</Company>
+    <Description>nuget</Description>
+    <RepositoryUrl>https://github.com/JanioSantosSilva</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
