@@ -1,43 +1,32 @@
-
-# Crie um pipeline do GitHub Actions que irá compilar uma aplicação .net 7 e publicar no GIthub Artifacts como pacote nuget
-
-name: .NET Core
+name: Release Package
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  release:
+    types: [created]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - run: npm ci
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
-
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 7.0.x
-
-    - name: Build
-      run: dotnet build --no-restore
-
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
-
-    # genere um dotnet pack do pacote nuget
-    - name: Pack
-      run: dotnet pack --configuration Release
-
-# inclua um dotnet nugeet add source para o github artifacts
-    - name: Add GitHub Packages Source
-      run: dotnet nuget add source https://nuget.pkg.github.com/JanioSantosSilva/index.json --name github --username JanioSantosSilva --store-password-in-clear-text --password ${{ secrets.GITHUB_TOKEN }}
-
-# inclua um dotnet nuget push para o github artifacts
-    - name: Push to GitHub Packages
-      run: dotnet nuget push **/*.nupkg --source github --skip-duplicate ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
