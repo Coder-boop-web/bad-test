@@ -19,8 +19,6 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: coder9937878924/main:tagname
 
       - name: Build and push Docker image
         id: push
